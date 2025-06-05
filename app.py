@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, request, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from models import db, User, Record
+from models import db, User, Record  # 使用 models.py 中的 db
 import os
 
 app = Flask(__name__)
@@ -10,26 +10,13 @@ app.config['SECRET_KEY'] = 'your-secret-key'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# 添加调试信息
-print("📡 SQLALCHEMY_DATABASE_URI =", os.environ.get("SQLALCHEMY_DATABASE_URI"))
-assert os.environ.get("SQLALCHEMY_DATABASE_URI") is not None, "❌ SQLALCHEMY_DATABASE_URI 未设置，无法连接数据库！"
-
-# 仅 init_app，不再创建新实例
-db = SQLAlchemy(app)
-
-with app.app_context():
-    try:
-        print("🔧 初始化数据库表中...")
-        db.create_all()
-        print("✅ 数据表创建完成")
-    except Exception as e:
-        print("❌ 数据表初始化失败:", e)
-
+db.init_app(app)  # ✅ 用 init_app 初始化
 
 # 初始化登录管理器
 login_manager = LoginManager()
 login_manager.login_view = 'login'
 login_manager.init_app(app)
+
 
 @login_manager.user_loader
 def load_user(user_id):
