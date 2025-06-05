@@ -1,0 +1,31 @@
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: flask_finance
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypass
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_RUN_HOST=0.0.0.0
+      - SQLALCHEMY_DATABASE_URI=mysql+pymysql://myuser:mypass@db:3306/flask_finance
+    command: ["./wait-for-db.sh", "db", "3306", "--", "python", "app.py"]
+
+
+    volumes:
+      - .:/app
+
+volumes:
+  db_data:
