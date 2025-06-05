@@ -73,10 +73,11 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
-# 自动创建数据库表
 if __name__ == '__main__':
     with app.app_context():
-        import time
-        time.sleep(10)
+        print("🔧 正在重建数据库...")
+        db.drop_all()
         db.create_all()
-    app.run(debug=True, host='0.0.0.0')  # 确保容器中可访问
+        print("✅ 数据库结构已刷新完成")
+    app.run(debug=True, host='0.0.0.0')
+
