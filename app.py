@@ -10,6 +10,10 @@ app.config['SECRET_KEY'] = 'your-secret-key'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# 添加调试信息
+print("📡 SQLALCHEMY_DATABASE_URI =", os.environ.get("SQLALCHEMY_DATABASE_URI"))
+assert os.environ.get("SQLALCHEMY_DATABASE_URI") is not None, "❌ SQLALCHEMY_DATABASE_URI 未设置，无法连接数据库！"
+
 # 仅 init_app，不再创建新实例
 db = SQLAlchemy(app)
 
