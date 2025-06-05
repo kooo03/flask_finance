@@ -11,7 +11,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # 仅 init_app，不再创建新实例
-db.init_app(app)
+db = SQLAlchemy(app)
 
 # 初始化登录管理器
 login_manager = LoginManager()
