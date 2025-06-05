@@ -17,6 +17,15 @@ assert os.environ.get("SQLALCHEMY_DATABASE_URI") is not None, "❌ SQLALCHEMY_DA
 # 仅 init_app，不再创建新实例
 db = SQLAlchemy(app)
 
+with app.app_context():
+    try:
+        print("🔧 初始化数据库表中...")
+        db.create_all()
+        print("✅ 数据表创建完成")
+    except Exception as e:
+        print("❌ 数据表初始化失败:", e)
+
+
 # 初始化登录管理器
 login_manager = LoginManager()
 login_manager.login_view = 'login'
