@@ -16,4 +16,5 @@ ENV FLASK_RUN_HOST=0.0.0.0
 
 EXPOSE 5000
 
-CMD ["python", "app.py"]
+CMD ["sh", "-c", "python init_db.py && python app.py"]
+
