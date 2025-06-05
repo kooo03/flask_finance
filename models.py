@@ -5,7 +5,8 @@ db = SQLAlchemy()
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True)
-    password = db.Column(db.String(200))
+    password = db.Column(db.String(512))
+
 
 class Record(db.Model):
     id = db.Column(db.Integer, primary_key=True)
